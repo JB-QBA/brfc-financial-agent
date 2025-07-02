@@ -22,7 +22,6 @@ app.add_middleware(
 )
 
 # === CONFIG ===
-JSON_KEY_PATH = "C:/Users/Johann/OneDrive/The Botes Family/Johann's Documents/Agents/BRFC Agents/winged-pen-413708-d067ac48546c.json"  #"/app/creds.json"
 GSHEET_NAME = "BRFC Financial Reporting Analysis"
 BUDGET_TAB = "FY2025Budget"
 ACTUALS_TAB = "AccountTransactions"
@@ -34,13 +33,19 @@ class ReportRequest(BaseModel):
     action_type: str = "run_monthly_report"
 
 # === SETUP ===
+import os
+import json
+from google.oauth2.service_account import Credentials
+
 def get_gsheet_client():
     scope = [
         "https://www.googleapis.com/auth/spreadsheets",
         "https://www.googleapis.com/auth/drive"
     ]
-    creds = Credentials.from_service_account_file(JSON_KEY_PATH, scopes=scope)
+    service_account_info = json.loads(os.environ["GOOGLE_SERVICE_ACCOUNT"])
+    creds = Credentials.from_service_account_info(service_account_info, scopes=scope)
     return gspread.authorize(creds)
+
 
 month_order = [
     "September", "October", "November", "December", "January", "February",
