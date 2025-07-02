@@ -1,0 +1,7 @@
+### 1. `requirements.txt`
+fastapi
+uvicorn
+gspread
+gspread_dataframe
+pandas
+google-auth
